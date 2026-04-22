@@ -11,15 +11,12 @@ jobs:
     steps:
       - name: Run scraper in container
         run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ahmedmonte --password-stdin
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u kayperooo --password-stdin
           docker run --rm \
             -e GMK=${{ secrets.GMK }} \
             -e SU=${{ secrets.SU }} \
             -e SK=${{ secrets.SK }} \
             -e DBP=${{ secrets.DBP }} \
             -e DWU=${{ secrets.DWU }} \
-            -e ENRICH_BATCH_SIZE=${{ secrets.ENRICH_BATCH_SIZE }} \
-            -e API_DELAY_SECONDS=${{ secrets.API_DELAY_SECONDS }} \
-            -e ENRICH_DAILY_QUOTA=${{ secrets.ENRICH_DAILY_QUOTA }} \
-            ghcr.io/ahmedmonte/scraper:latest \
+            ghcr.io/kayperooo/scraper:latest \
             python -m src.scripts.run_discover
