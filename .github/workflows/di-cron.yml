@@ -1,8 +1,8 @@
 name: Discover Tests 
 
 on:
-  schedule:
-    - cron: '17,47 * * * *'  # Every 30 minutes
+  repository_dispatch:
+    types: [cronhub_trigger]
   workflow_dispatch:  # Allow manual trigger
 
 jobs:
