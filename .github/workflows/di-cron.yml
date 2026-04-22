@@ -2,14 +2,14 @@ name: Discover Tests
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # Every 30 minutes
+    - cron: '17,47 * * * *'  # Every 30 minutes
   workflow_dispatch:  # Allow manual trigger
 
 jobs:
   run-scraper:
     runs-on: ubuntu-latest
     steps:
-      - name: Run scraper in container
+      - name: Run discover container
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u kayperooo --password-stdin
           docker run --rm \
@@ -20,3 +20,16 @@ jobs:
             -e DWU=${{ secrets.DWU }} \
             ghcr.io/kayperooo/scraper:latest \
             python -m src.scripts.run_discover > /dev/null 2>&1
+      - name: Run enrich container
+        run: |
+          for i in {1..8}; do
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u kayperooo --password-stdin
+            docker run --rm \
+              -e GMK=${{ secrets.GMK }} \
+              -e SU=${{ secrets.SU }} \
+              -e SK=${{ secrets.SK }} \
+              -e DBP=${{ secrets.DBP }} \
+              -e DWU=${{ secrets.DWU }} \
+              ghcr.io/kayperooo/scraper:latest \
+              python -m src.scripts.run_enrich > /dev/null 2>&1
+          done
