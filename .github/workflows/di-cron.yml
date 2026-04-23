@@ -31,5 +31,5 @@ jobs:
               -e DBP=${{ secrets.DBP }} \
               -e DWU=${{ secrets.DWU }} \
               ghcr.io/kayperooo/scraper:latest \
-              python -m src.scripts.run_enrich > /dev/null 2>&1
+              python -m src.scripts.run_enrich #> /dev/null 2>&1
           done
