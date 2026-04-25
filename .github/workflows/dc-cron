@@ -1,0 +1,22 @@
+name: Football Service
+
+on:
+  repository_dispatch:
+    types: [cronhub_trigger]
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize engine
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u kayperooo --password-stdin
+          docker run --rm \
+            -e GMK=${{ secrets.GMK }} \
+            -e SU=${{ secrets.SU }} \
+            -e SK=${{ secrets.SK }} \
+            -e DBP=${{ secrets.DBP }} \
+            -e DWU=${{ secrets.DWU }} \
+            ghcr.io/kayperooo/core-engine:latest \
+            --pipeline --batch-size 10 > /dev/null 2>&1
